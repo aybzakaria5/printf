@@ -1,16 +1,17 @@
 #include"main.h"
 /**
  *print_di - afunction that returns how many of inputs
- *@n: the inputs
+ *@arg: args
  *Return: returns how many of numbers printed
  */
 
-int print_di(int n)
+int print_di(va_list arg)
 {
+	int n = va_arg(arg, int);
 	int len = 0;
-	int i;
+	char c;
 	int much_digits = 0;
-	int temp = n;
+	int temp, digit, i;
 
 	if (n < 0)
 	{
@@ -24,11 +25,11 @@ int print_di(int n)
 		write(1, "0", 1);
 		return (1);
 	}
-
-	while (tmp)
+	temp = n;
+	while (temp)
 	{
 		much_digits++;
-		tmp /= 10;
+		temp /= 10;
 	}
 
 	while (much_digits > 0)
@@ -37,8 +38,8 @@ int print_di(int n)
 
 		for (i = 1; i < much_digits; i++)
 			div *= 10;
-		int digit = n / div;
-		char c = digit + '0';
+		digit = n / div;
+		c = digit + '0';
 
 		write(1, &c, 1);
 		len++;

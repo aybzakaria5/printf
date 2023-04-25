@@ -73,6 +73,11 @@ int print_switch(const char *format, va_list ap, int i)
 		case '\0':
 		case ' ':
 			return (-1);
+		case 'i':
+		case 'd':
+			l += print_di(ap);
+			i++;
+			break;
 		default:
 			write(1, &format[i], 1);
 			return (-2);
