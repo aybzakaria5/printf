@@ -79,6 +79,11 @@ int print_cs(const char *format, va_list ap)
 				l += print_s(ap);
 				i++;
 				break;
+			case 'i':
+			case 'd':
+				l += print_di(ap);
+				i++;
+				break;
 			case '\0':
 			case ' ':
 				return (-1);
