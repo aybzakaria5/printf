@@ -1,11 +1,10 @@
 #include "main.h"
-
 /**
  * _strlen - Return the length of a string
- * @s: The string to calculate its length
+ *@s: the string to calcullate its lenght
  *
- * Return: The length of the the string
-*/
+ *Return: the lenght of the string
+ */
 int _strlen(char *s)
 {
 	int i;
@@ -19,23 +18,25 @@ int _strlen(char *s)
 }
 
 /**
- * print_c - print a single character
- * @arg: the character argument
-*/
-void print_c(va_list arg)
+ *print_c - print a single character
+ *@arg: the character argument
+ *
+ *Return: always 1
+ */
+int print_c(va_list arg)
 {
 	char c;
 
 	c = (char) va_arg(arg, int);
-	write(1, &c, 1);
+	return (write(1, &c, 1));
 }
 
 /**
- * print_s - print a string
- * @arg: the string argument
+ *print_s - print a string
+ *@arg: the string argument
  *
- * Return: length of the string argument
-*/
+ *Return:  lenght of the string argument
+ */
 int print_s(va_list arg)
 {
 	char *s;
@@ -46,77 +47,75 @@ int print_s(va_list arg)
 	write(1, s, _strlen(s));
 	return (_strlen(s));
 }
+/**
+ *print_switch - print charcater or string
+ *@format: the string format
+ *@ap: the argument list
+ *@i: the format specifire
+ *
+ *Return: number of character printed
+ */
+int print_switch(const char *format, va_list ap, int i)
+{
+	int l = 0;
+
+	switch (format[i + 1])
+	{
+		case '%':
+			l += write(1, &format[i], 1);
+			break;
+		case 'c':
+			l += print_c(ap);
+			break;
+		case 's':
+			l += print_s(ap);
+			break;
+		case '\0':
+		case ' ':
+			return (-1);
+		default:
+			write(1, &format[i], 1);
+			return (-2);
+	}
+	return (l);
+}
 
 /**
- * print_cs - print character or string
- * @format: the string format
- * @ap: the argumant list
+ *_printf - produces output according to a format
+ *@format: the format string
  *
- * Return: number of character printed
-*/
-int print_cs(const char *format, va_list ap)
-{
-	int l, i;
+ *Return: number of character printed
+ */
 
-	i = l = 0;
+int _printf(const char *format, ...)
+{
+	va_list ap;
+	int l, i, count;
+
+	va_start(ap, format);
+	i = l = count = 0;
+	if (format == NULL)
+		return (-1);
 	while (format[i] != '\0')
 	{
 		if (format[i] == '%')
 		{
-			switch (format[i + 1])
-			{
-			case '%':
-				write(1, &format[i], 1);
-				l++;
-				i++;
-				break;
-			case 'c':
-				print_c(ap);
-				l++;
-				i++;
-				break;
-			case 's':
-				l += print_s(ap);
-				i++;
-				break;
-			case 'i':
-			case 'd':
-				l += print_di(ap);
-				i++;
-				break;
-			case '\0':
-			case ' ':
+			count = print_switch(format, ap, i);
+			if (count == -1)
 				return (-1);
-			default:
-				write(1, &format[i], 1);
+			if (count == -2)
 				l++;
-				break;
+			if (count >= 0)
+			{
+				i++;
+				l += count;
 			}
 		}
 		else
-		{
-			write(1, &format[i], 1);
-			l++;
-		}
+			l += write(1, &format[i], 1);
 		i++;
 	}
-	return (l);
-}
-/**
- * _printf - produces output according to a format
- * @format: the format string
- *
- * Return: number of character printed
-*/
-int _printf(const char *format, ...)
-{
-	va_list ap;
-	int l;
-
-	va_start(ap, format);
-	if (format == NULL)
-		return (-1);
-	l = print_cs(format, ap);
 	va_end(ap);
 	return (l);
 }
+
