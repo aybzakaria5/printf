@@ -80,7 +80,6 @@ int print_cs(const char *format, va_list ap)
 				i++;
 				break;
 			case '\0':
-				return (-1);
 			case ' ':
 				return (-1);
 			default:
@@ -110,8 +109,6 @@ int _printf(const char *format, ...)
 	int l;
 
 	va_start(ap, format);
-	/* if (*format == '%' && (*(format + 1) == '\0' || *(format + 1) == ' '))
-		return (-1); */
 	if (format == NULL)
 		return (-1);
 	l = print_cs(format, ap);
