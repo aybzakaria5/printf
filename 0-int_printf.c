@@ -78,6 +78,10 @@ int print_switch(const char *format, va_list ap, int i)
 			l += print_di(ap);
 			i++;
 			break;
+		case 'b':
+			l += print_bui(ap);
+			i++;
+			break;
 		default:
 			write(1, &format[i], 1);
 			return (-2);
@@ -123,4 +127,3 @@ int _printf(const char *format, ...)
 	va_end(ap);
 	return (l);
 }
-
