@@ -3,6 +3,7 @@
 #include <stdarg.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <limits.h>
 int _printf(const char *format, ...);
 int _strlen(char *s);
 int print_c(va_list arg);
